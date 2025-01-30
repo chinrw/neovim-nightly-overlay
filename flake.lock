@@ -123,11 +123,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1736917206,
-        "narHash": "sha256-JTBWmyGf8K1Rwb+gviHIUzRJk/sITtT+72HXFkTZUjo=",
+        "lastModified": 1738237977,
+        "narHash": "sha256-oJN/yvRL7G0WlR/hTkQIjFbPkzCV+sFnNB/38Tb9RL4=",
         "owner": "hercules-ci",
         "repo": "hercules-ci-effects",
-        "rev": "afd0a42e8c61ebb56899315ee4084a8b2e4ff425",
+        "rev": "6d1b6d5d59758b4f5f05745f774fc13cdc59da43",
         "type": "github"
       },
       "original": {
@@ -139,11 +139,11 @@
     "neovim-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1738219153,
-        "narHash": "sha256-4AOjlBXjlLtbsz2AWCN6VH3Tn0MwY5C6E+HgRLSXYpQ=",
+        "lastModified": 1738239700,
+        "narHash": "sha256-haS3PD042bot99EEMa+ctWAucDYhlTneTw5YqoU0Nbc=",
         "owner": "neovim",
         "repo": "neovim",
-        "rev": "efa664c7ed21b63f2cf0a8caa53161fe7e32b2bb",
+        "rev": "86ae59c6128641d8be612c3bdc9f4b190434c0d3",
         "type": "github"
       },
       "original": {
