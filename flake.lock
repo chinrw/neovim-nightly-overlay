@@ -139,11 +139,11 @@
     "neovim-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1746957298,
-        "narHash": "sha256-KeBtMuLKIHc3orKV+QKCxB9JDrq48NvxgHPDN0vEO04=",
+        "lastModified": 1746974946,
+        "narHash": "sha256-IiVwWYRdivTnBtY2PbA2Pf1OBUrByJnlfBwyB8b6UUc=",
         "owner": "neovim",
         "repo": "neovim",
-        "rev": "59c45b22d9616cda448b3c3dddd3e9274c830ca3",
+        "rev": "2c07428966a74c76003e00e2a37bf98eb8802c93",
         "type": "github"
       },
       "original": {
