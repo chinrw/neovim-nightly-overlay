@@ -9,14 +9,19 @@ neovim-debug.overrideAttrs (oa: {
   cmakeFlags =
     oa.cmakeFlags
     ++ [
-      "-DLUACHECK_PRG=${pkgs.luajit.pkgs.luacheck}/bin/luacheck"
-      "-DENABLE_LTO=OFF"
+      (lib.cmakeFeature "LUACHECK_PRG" (lib.getExe pkgs.luajit.pkgs.luacheck))
+      (lib.cmakeBool "ENABLE_LTO" false)
     ]
     ++ lib.optionals pkgs.stdenv.isLinux [
       # https://github.com/google/sanitizers/wiki/AddressSanitizerFlags
       # https://clang.llvm.org/docs/AddressSanitizer.html#symbolizing-the-reports
-      "-DENABLE_ASAN_UBSAN=ON"
+      (lib.cmakeBool "ENABLE_ASAN_UBSAN" true)
     ];
+
+  nativeBuildInputs = oa.nativeBuildInputs ++ [
+    pkgs.stylua
+  ];
+
   doCheck = pkgs.stdenv.isLinux;
   shellHook = ''
     export VIMRUNTIME=${neovim-src}/runtime
