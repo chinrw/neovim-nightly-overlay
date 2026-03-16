@@ -28,6 +28,20 @@ jobs:
           pr-title: "chore(flake): bump flake"
           git-author-name: 'Ruowen Qin'
           git-author-email: 'chinqrw@gmail.com'
+      - name: Update tree-sitter cargoHash
+        if: ${{ steps.update.outputs.pull-request-number != null }}
+        run: |
+          git checkout flake-lock-update-pr
+          .github/scripts/update-cargo-hash.sh
+          if git diff --quiet; then
+            echo "No cargoHash changes needed"
+          else
+            git config user.name 'Ruowen Qin'
+            git config user.email 'chinqrw@gmail.com'
+            git add flake/packages/tree-sitter.nix
+            git commit -m "chore: update tree-sitter cargoHash"
+            git push
+          fi
       - run: "gh pr merge --rebase ${{ steps.update.outputs.pull-request-number }}"
         if: ${{ steps.update.outputs.pull-request-number != null }}
         env:
