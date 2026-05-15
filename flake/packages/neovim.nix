@@ -42,6 +42,12 @@ in
   version = "nightly";
   inherit src;
 
+  # nixpkgs enabled `make functionaltest__treesitter` in checkPhase
+  # (NixOS/nixpkgs#509368), but the suite was only validated on linux.
+  # On darwin, every test spawns `nvim --listen TXXX` which fails with
+  # EADDRINUSE under the build sandbox.
+  doCheck = (oa.doCheck or true) && !pkgs.stdenv.hostPlatform.isDarwin;
+
   preConfigure = ''
     ${oa.preConfigure}
     substituteInPlace cmake.config/versiondef.h.in \
