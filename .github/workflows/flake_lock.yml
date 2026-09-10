@@ -1,0 +1,50 @@
+name: update-flake
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */3 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-flake-master
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.repository == 'chinrw/neovim-nightly-overlay'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: master
+      - uses: cachix/install-nix-action@b85815f71a6de0ddee80b8a80a98d43f4bcc66c7 # v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          extra_nix_config: |
+            accept-flake-config = true
+      - name: Update dependencies
+        run: |
+          nix flake update
+          if ! git diff --quiet -- flake.lock; then
+            python3 .github/scripts/update-cargo-hash.py
+          fi
+      - name: Build and check Neovim
+        run: |
+          nix build .#default -L
+          ./result/bin/nvim --version
+          ./result/bin/nvim --headless -u NONE -i NONE \
+            '+lua local ok, loaded = pcall(vim.treesitter.language.add, "lua"); if not ok or not loaded then vim.cmd("cquit 1") end' +qa
+      - name: Publish verified dependencies
+        run: |
+          if git diff --quiet -- flake.lock flake/packages/tree-sitter.nix; then
+            exit 0
+          fi
+          git config user.name 'Ruowen Qin'
+          git config user.email 'chinqrw@gmail.com'
+          git add flake.lock flake/packages/tree-sitter.nix
+          git commit -s -m 'chore(flake): update verified dependencies'
+          git push origin HEAD:master
